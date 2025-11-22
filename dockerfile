@@ -18,10 +18,10 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Construir frontend
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-RUN apt-get install -y nodejs
-RUN npm install
-RUN npm run build
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install \
+    && npm run build
 
 # Copiar config de Nginx
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
@@ -32,4 +32,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 EXPOSE 80
 
 # Ejecutar PHP-FPM y Nginx juntos
-CMD service php-fpm start && nginx -g "daemon off;"
+CMD php-fpm -F & nginx -g "daemon off;"
+
