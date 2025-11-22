@@ -1,7 +1,12 @@
 services:
   - type: web
     name: farmacia-app
-    env: docker
     plan: free
+    env: docker
+    repo: https://github.com/HectorG117/Farmacia
+    branch: main
+    rootDir: /
+    dockerfilePath: Dockerfile
     autoDeploy: true
+
 

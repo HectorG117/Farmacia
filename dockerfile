@@ -1,33 +1,37 @@
-# ------------------------------
-# PHP-FPM + Composer
-# ------------------------------
 FROM php:8.2-fpm
 
-# Extensiones necesarias
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git zip unzip nginx \
+    git zip unzip curl nginx \
     && docker-php-ext-install pdo pdo_mysql
 
-# Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar Node.js 20 y NPM
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
 
-# Archivos de la app
+# Copiar Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Setear directorio
 WORKDIR /var/www/html
+
+# Copiar proyecto
 COPY . .
 
-# Instalar dependencias Laravel
+# Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Construir assets
-RUN npm install && npm run build
+# Instalar dependencias JS y construir frontend
+RUN npm install
+RUN npm run build
 
-# Permisos para almacenamiento
+# Permisos para Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Copiar configuración Nginx
-COPY deploy/nginx.conf /etc/nginx/sites-enabled/default
+# Copiar configuración de Nginx
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponer puerto
 EXPOSE 80
 
-CMD service nginx start && php-fpm
+# Iniciar PHP-FPM y Nginx
+CMD php-fpm & nginx -g "daemon off;"
