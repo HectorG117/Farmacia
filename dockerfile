@@ -1,43 +1,35 @@
-# --------------------------
-# Etapa 1: Construir dependencias PHP + Composer
-# --------------------------
-FROM php:8.2-fpm AS php-build
+FROM php:8.2-fpm
 
+# Instalar extensiones necesarias
 RUN apt-get update && apt-get install -y \
+    nginx \
     unzip zip git curl libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /app
+WORKDIR /var/www/html
+
+# Copiar aplicación Laravel
 COPY . .
 
-# Instalar dependencias de Laravel
+# Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# --------------------------
-# Etapa 2: Construir frontend con Vite
-# --------------------------
-FROM node:20 AS node-build
-WORKDIR /app
-
-COPY . .
+# Construir frontend
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get install -y nodejs
 RUN npm install
 RUN npm run build
 
-# --------------------------
-# Etapa 3: Servidor final (Nginx + PHP-FPM)
-# --------------------------
-FROM nginx:stable
+# Copiar config de Nginx
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar archivos frontend compilados
-COPY --from=node-build /app/public /var/www/html/public
-# Copiar Laravel + vendor
-COPY --from=php-build /app /var/www/html
-
-# Configurar Nginx
-COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
+# Permisos
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Ejecutar PHP-FPM y Nginx juntos
+CMD service php-fpm start && nginx -g "daemon off;"
