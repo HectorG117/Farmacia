@@ -13,43 +13,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/Inicio','/inicio');
+// Página principal
+Route::view('/Inicio', 'inicio');
 
-Route::view('/usuario/contacto','/informacion/contacto');
+// Información del usuario
+Route::view('/usuario/contacto', 'informacion.contacto');
 
+// Sobre nosotros
+Route::view('/SobreNosotros', 'empresa');
+Route::view('/Blog', 'SobreNosotros.blog');
+Route::view('/Preguntas', 'SobreNosotros.preguntas');
+Route::view('/Contacto', 'SobreNosotros.contacto');
+Route::view('/Politicas', 'SobreNosotros.politicas');
+Route::view('/Sucursales', 'SobreNosotros.sucursal');
 
-Route::view('/SobreNosotros','/empresa');
+// Información general
+Route::view('/Locales', 'informacion.sucursales');
 
-Route::view('/Blog','/SobreNosotros/blog');
+// Servicios y carrito
+Route::view('/Servicios', 'servicios');
+Route::view('/Pago', 'Carrito.pago');
 
-Route::view('/Locales','/informacion/sucursales');
+// Autenticación
+Route::view('/LoginHuella', 'login_huella');
+Route::view('/Login', 'login');
 
-Route::view('/Servicios','servicios');
+// Test
+Route::view('/test', 'test');
 
-Route::view('/Pago','/Carrito/pago');
+// Productos
+Route::view('/Productos', 'productos');
+Route::view('/producto', 'producto');
 
-Route::view('/LoginHuella','/login_huella');
+// Promociones
+Route::view('/Promociones', 'promociones');
 
-Route::view('/test','/test');
-
-Route::view('/Login','/login');
-
-Route::view('/Preguntas','/SobreNosotros/preguntas');
-
-Route::view('/Contacto','/SobreNosotros/contacto');
-
-Route::view('/Politicas','/SobreNosotros/politicas');
-
-Route::view('/Sucursales','/SobreNosotros/sucursal');
-
-Route::view('/Productos','/productos');
-
-Route::view('/producto','/producto');
-
-Route::view('/Promociones','/promociones');
-
-Route::view('/Perfil','/perfil');
+// Perfil
+Route::view('/Perfil', 'perfil');
