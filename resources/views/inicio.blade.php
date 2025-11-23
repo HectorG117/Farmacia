@@ -11,7 +11,7 @@
 
   <!-- Fondo borroso de la imagen -->
   <div class="absolute inset-0 bg-cover bg-center blur-sm"
-       style="background-image: url('/Pictures/Inicio/farmacias-pjpg.webp');">
+       style="background-image: url('/pictures/Inicio/farmacias-pjpg.webp');">
   </div>
 
   <!-- Imagen principal -->

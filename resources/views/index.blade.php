@@ -14,7 +14,7 @@
   <header class="flex flex-col md:flex-row items-center justify-between w-full bg-blue-500 p-4 relative z-50">
     <!-- Logo -->
     <div class="flex items-center gap-3 pl-6">
-      <img src="/Pictures/Index/logo-farmacia.jpg" 
+      <img src="/pictures/Index/logo-farmacia.jpg" 
            alt="Logo Farmacia VidaPlena" 
            class="h-12 w-12 object-contain rounded bg-white p-1 shadow-md">
       <span class="text-white font-bold text-2xl">Farmacia Misericordia</span>
@@ -22,7 +22,7 @@
     <div class="hidden md:flex flex-1"></div>
      <!-- Perfil -->
     <div class="flex items-center gap-2  text-white p-2 rounded-lg mr-6 cursor-pointer hover:bg-blue-600 transition">
-      <img src="/Pictures/Index/perfil.png" 
+      <img src="/pictures/Index/perfil.png" 
            alt="Perfil Usuario" 
            class="h-8 w-8 rounded-full bg-white p-1">
       <a href="/Login"class="sm:inline font-medium text-2xl">Perfil</a>
