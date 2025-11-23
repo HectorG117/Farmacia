@@ -15,7 +15,7 @@
   </div>
 
   <!-- Imagen principal -->
-  <img src="/Pictures/Inicio/farmacias-pjpg.webp"
+  <img src="/pictures/Inicio/farmacias-pjpg.webp"
        class="relative mx-auto h-full object-contain">
 
 </section>
@@ -34,7 +34,7 @@
     <!-- Imagen + texto lado a lado -->
     <section class="flex flex-col lg:flex-row rounded-lg bg-white  p-2 m-2 rounded-lg shadow-m ">
       <div class=" flex justify-center items-center w-full lg:w-1/2  p-1 rounded-lg">
-        <img src="/Pictures/Inicio/farmacias-del-pueblo-4.jpg" class="w-full h-48 lg:h-80 flex justify-center items-center rounded">   
+        <img src="/pictures/Inicio/farmacias-del-pueblo-4.jpg" class="w-full h-48 lg:h-80 flex justify-center items-center rounded">   
       </img>
       </div>
       <div class="  flex flex-col w-full lg:w-1/2  rounded-lg p-1 rounded-lg">
