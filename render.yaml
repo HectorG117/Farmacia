@@ -1,55 +1,11 @@
 services:
   - type: web
-    name: farmacia-misericordia
-    env: docker
-    plan: free
-    dockerfilePath: ./Dockerfile
-    autoDeploy: true
-
-    envVars:
-      - key: APP_ENV
-        value: production
-
-      - key: APP_DEBUG
-        value: false
-
-      - key: APP_KEY
-        generateValue: true
-
-      - key: LOG_LEVEL
-        value: error
-
-      # Base de datos (ajusta según tu instancia)
-      - key: DB_CONNECTION
-        value: mysql
-
-      - key: DB_HOST
-        fromService:
-          type: pserv
-          name: farmacia-db
-          property: host
-
-      - key: DB_DATABASE
-        value: farmacia
-
-      - key: DB_USERNAME
-        value: root
-
-      - key: DB_PASSWORD
-        fromService:
-          type: pserv
-          name: farmacia-db
-          property: password
-
-    # Render usará este puerto porque lo exponemos en Dockerfile
-    ports:
-      - port: 8080
-        protocol: http
-
-
-databases:
-  - name: farmacia-db
-    plan: free
-    databaseName: farmacia
+    name: farmacia
+    env: php
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      npm install
+      npm run build
+    startCommand: php -S 0.0.0.0:8080 -t public
 
 
