@@ -1,11 +1,12 @@
+# Imagen base de PHP con extensiones necesarias
 FROM php:8.2-fpm
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git zip unzip curl nginx \
+    git unzip zip curl \
     && docker-php-ext-install pdo pdo_mysql
 
-# Instalar Node.js 20 y NPM
+# Instalar Node.js 20 y npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
@@ -20,20 +21,18 @@ COPY . .
 # Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Construir el frontend de producción
-RUN npm ci
+# Instalar dependencias de npm y compilar Tailwind/Vite
+RUN npm install
 RUN npm run build
 
-# Dar permisos
+# Permisos
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Copiar configuración Nginx
-COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+# Exponer el puerto del servidor interno de Laravel
+EXPOSE 8080
 
-# Render necesita que PHP-FPM escuche en 9000
-RUN sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /usr/local/etc/php-fpm.d/zz-docker.conf
+# Comando de inicio:
+# Ejecutamos PHP-FPM en segundo plano y Laravel en primer plano
+CMD php-fpm -D && php artisan serve --host=0.0.0.0 --port=8080
 
-EXPOSE 80
-
-CMD service php-fpm start && nginx -g "daemon off;"
 
